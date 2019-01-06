@@ -1,0 +1,8 @@
+{
+  "name": "house-plan-scraper-webtasks",
+  "version": "0.0.1",
+  "dependencies": {
+    "cheerio": "0.19.0",
+    "request": "2.81.0"
+  }
+}
