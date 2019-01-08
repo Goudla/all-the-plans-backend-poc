@@ -1,7 +1,5 @@
-const request = require('request@2.81.0');
-const cheerio = require('cheerio@0.19.0');
-// const request = require('request');
-// const cheerio = require('cheerio');
+const request = require('request');
+const cheerio = require('cheerio');
 
 module.exports = function (cb) {
   const jar = request.jar();
