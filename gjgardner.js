@@ -2,10 +2,9 @@ const request = require('request');
 const cheerio = require('cheerio');
 
 module.exports = function (cb) {
-  const jar = request.jar();
-  const url = 'https://www.gjgardner.co.nz/english/home-designs/?listingsPerPage=16';
+  const url = 'https://www.gjgardner.co.nz/english/home-designs/';
 
-  request({ url, jar }, function (error, response, html) {
+  request({ url }, function (error, response, html) {
     if (!error) {
       const $ = cheerio.load(html);
       const str = $('script:not([src])')[4].children[0].data;

@@ -15,7 +15,6 @@ module.exports = function (cb) {
   Promise.all(requests)
     .then((values) => {
       const json = [];
-
       values.forEach(function(html) {
         const $ = cheerio.load(html);
         $('.packageset').children().each(function() {
