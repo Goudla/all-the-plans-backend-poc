@@ -1,5 +1,8 @@
 const request = require('request');
 const cheerio = require('cheerio');
+const uuidv5 = require('uuid/v5');
+
+const company = 'GJ Gardner';
 
 module.exports = function (cb) {
   const url = 'https://www.gjgardner.co.nz/english/home-designs/';
@@ -11,7 +14,10 @@ module.exports = function (cb) {
       // HACK
       const listings = JSON.parse(str.match(/(?<=window.gjgardner.listings = )(.*)(?=;)/)[0]);
       const formattedListings = listings.map(function(listing) {
+        const link = `https://www.gjgardner.co.nz${listing.Link}`;
         return {
+          uuid: uuidv5(link, uuidv5.URL),
+          companyTitle: 'GJ Gardner',
           title: listing.Title,
           bedrooms: listing.Bedrooms,
           bathrooms: listing.Bathrooms,
