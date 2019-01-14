@@ -1,5 +1,6 @@
 const request = require('request-promise-native');
 const cheerio = require('cheerio');
+const uuidv5 = require('uuid/v5');
 
 module.exports = function (cb) {
   const urls = [
@@ -24,11 +25,18 @@ module.exports = function (cb) {
           const bathrooms = data.find('.bathroom').text().trim();
           const garages = data.find('.garage').text().trim();
           const id = data.attr('id').replace('property_detail_', '');
+          const link = `https://www.mikegreerhomes.co.nz/design-and-build/profile/${id}`;
+          const thumbnailImage = data.find('.img-responsive').attr('src');
+
           json.push({
+            uuid: uuidv5(link, uuidv5.URL),
+            companyTitle: 'Mike Greer Homes',
             title,
             bedrooms: Number(bedrooms),
             bathrooms: Number(bathrooms),
             garages: Number(garages),
+            link,
+            thumbnailImage: `https://www.mikegreerhomes.co.nz${thumbnailImage}`,
             id: Number(id)
           })
         });
