@@ -27,7 +27,7 @@ module.exports = function (cb) {
           length: listing.Length,
           alfrescoArea: listing.AlfrescoArea,
           id: listing.ID,
-          link: listing.Link,
+          link: `https://www.gjgardner.co.nz${listing.Link}`,
           thumbnailImage: listing.ThumbnailImage,
           collectionTitle: listing.CollectionTitle,
           price: listing.Price
