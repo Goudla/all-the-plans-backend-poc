@@ -1,0 +1,19 @@
+{
+  "plugins": ["node"],
+  "extends": ["eslint:recommended", "plugin:node/recommended"],
+  "env": {
+    "node": true,
+    "mocha": true
+  },
+  "globals": {
+    "fetch": true
+  },
+  "rules": {
+    "node/no-unpublished-require": 0,
+    "node/no-deprecated-api": 0,
+    "node/no-unsupported-features": [2, {
+      "version": 6,
+      "ignores": []
+    }]
+  }
+}

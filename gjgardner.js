@@ -2,8 +2,6 @@ const request = require('request');
 const cheerio = require('cheerio');
 const uuidv5 = require('uuid/v5');
 
-const company = 'GJ Gardner';
-
 module.exports = function (cb) {
   const url = 'https://www.gjgardner.co.nz/english/home-designs/';
 

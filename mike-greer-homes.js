@@ -3,20 +3,29 @@ const cheerio = require('cheerio');
 const uuidv5 = require('uuid/v5');
 
 module.exports = function (cb) {
-  const urls = [
-    'https://www.mikegreerhomes.co.nz/design-and-build/entry',
-    'https://www.mikegreerhomes.co.nz/design-and-build/transitional',
-    'https://www.mikegreerhomes.co.nz/design-and-build/family'
+  const collections = [
+    {
+      url: 'https://www.mikegreerhomes.co.nz/design-and-build/entry',
+      title: 'Entry Collection'
+    },
+    {
+      url: 'https://www.mikegreerhomes.co.nz/design-and-build/transitional',
+      title: 'Transitional Collection'
+    },
+    {
+      url: 'https://www.mikegreerhomes.co.nz/design-and-build/family',
+      title: 'Family Collection'
+    }
   ];
 
-  const requests = urls.map(function(url) {
-    return request({ url, rejectUnauthorized: false });
+  const requests = collections.map(function(collection) {
+    return request({ url: collection.url, rejectUnauthorized: false });
   });
 
   Promise.all(requests)
     .then((values) => {
       const json = [];
-      values.forEach(function(html) {
+      values.forEach((html, index) => {
         const $ = cheerio.load(html);
         $('.packageset').children().each(function() {
           const data = $(this);
@@ -27,6 +36,7 @@ module.exports = function (cb) {
           const id = data.attr('id').replace('property_detail_', '');
           const link = `https://www.mikegreerhomes.co.nz/design-and-build/profile/${id}`;
           const thumbnailImage = data.find('.img-responsive').attr('src');
+          const floorArea = data.find('.home-size').text().trim();
 
           json.push({
             uuid: uuidv5(link, uuidv5.URL),
@@ -35,8 +45,10 @@ module.exports = function (cb) {
             bedrooms: Number(bedrooms),
             bathrooms: Number(bathrooms),
             garages: Number(garages),
+            floorArea: Number(floorArea),
             link,
             thumbnailImage: `https://www.mikegreerhomes.co.nz${thumbnailImage}`,
+            collectionTitle: collections[index].title,
             id: Number(id)
           })
         });
