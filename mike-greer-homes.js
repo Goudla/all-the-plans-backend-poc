@@ -3,6 +3,7 @@ const cheerio = require('cheerio');
 const uuidv5 = require('uuid/v5');
 
 module.exports = function (cb) {
+  let json = [];
   const collections = [
     {
       url: 'https://www.mikegreerhomes.co.nz/design-and-build/entry',
@@ -24,7 +25,6 @@ module.exports = function (cb) {
 
   Promise.all(requests)
     .then((values) => {
-      const json = [];
       values.forEach((html, index) => {
         const $ = cheerio.load(html);
         $('.packageset').children().each(function() {
@@ -53,6 +53,13 @@ module.exports = function (cb) {
           })
         });
       });
+      return request({
+        method: 'PATCH',
+        uri: 'https://wt-douglasbamber-gmail_com-0.sandbox.auth0-extend.com/plans',
+        body: json,
+        json: true
+      });
+    }).then(() => {
       cb(null, json);
     })
     .catch((error) => {
