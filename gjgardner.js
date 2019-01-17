@@ -1,17 +1,18 @@
-const request = require('request');
+const request = require('request-promise-native');
 const cheerio = require('cheerio');
 const uuidv5 = require('uuid/v5');
 
 module.exports = function (cb) {
+  let json = [];
   const url = 'https://www.gjgardner.co.nz/english/home-designs/';
 
-  request({ url }, function (error, response, html) {
-    if (!error) {
+  request({ url })
+    .then((html) => {
       const $ = cheerio.load(html);
       const str = $('script:not([src])')[4].children[0].data;
       // HACK
       const listings = JSON.parse(str.match(/(?<=window.gjgardner.listings = )(.*)(?=;)/)[0]);
-      const formattedListings = listings.map(function(listing) {
+      json = listings.map(function(listing) {
         const link = `https://www.gjgardner.co.nz${listing.Link}`;
         return {
           uuid: uuidv5(link, uuidv5.URL),
@@ -37,9 +38,16 @@ module.exports = function (cb) {
           price: listing.Price
         }
       })
-      cb(null, formattedListings);
-    } else {
+      return request({
+        method: 'PATCH',
+        uri: 'https://wt-douglasbamber-gmail_com-0.sandbox.auth0-extend.com/plans',
+        body: json,
+        json: true
+      });
+    }).then(() => {
+      cb(null, json);
+    })
+    .catch((error) => {
       cb(error);
-    }
-  })
+    });
 }
