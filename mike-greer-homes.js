@@ -49,7 +49,7 @@ module.exports = function (cb) {
             link,
             thumbnailImage: `https://www.mikegreerhomes.co.nz${thumbnailImage}`,
             collectionTitle: collections[index].title,
-            id: Number(id)
+            price: null
           })
         });
       });

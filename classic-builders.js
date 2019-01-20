@@ -27,7 +27,6 @@ module.exports = function (cb) {
               link,
               thumbnailImage: `http://www.classicbuilders.co.nz${thumbnailImage}`,
               collectionTitle: listingItem.series,
-              id: null,
               price: Number(listingItem.price)
             })
           }
