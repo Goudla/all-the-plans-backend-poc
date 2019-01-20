@@ -14,7 +14,7 @@ module.exports = function (cb) {
           const title = data.find('.g-houseland-header').text().trim();
 
           if (title) {
-            const thumbnailImage = data.find('.g-houselandframe-image').attr('style').match(/(?<=url\()(.*)(?=\);)/);
+            const thumbnailImage = data.find('.g-houselandframe-image').attr('style').match(/(?<=url\()(.*)(?=\);)/)[0];
             const link = `https://www.goldenhomes.co.nz/plans/${title.toLowerCase()}`;
             const bedrooms = data.children('span').eq(2).children('.spec-deet').text();
             const bathrooms = data.children('span').eq(3).children('.spec-deet').text();
@@ -30,7 +30,7 @@ module.exports = function (cb) {
               garages: Number(garages),
               floorArea: Number(floorArea),
               link,
-              thumbnailImage: `http://www.classicbuilders.co.nz${thumbnailImage}`,
+              thumbnailImage: `https://www.goldenhomes.co.nz${thumbnailImage}`,
               collectionTitle: null,
               price: null
             })
